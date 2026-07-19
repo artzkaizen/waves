@@ -26,8 +26,11 @@ services:
       # stateful thing in the system — lose it and you lose the recordings.
       - waves-data:/data
 
-    ports:
-      - "8000:8000"
+    # NOTE: no host `ports:` mapping. Under otterdeploy (and other managed ingress) the
+    # platform routes the public domain to the container's port 8000 over its own network
+    # via `--expose`; publishing 8000 on the host on top of that conflicts with the shared
+    # host port and prevents the container from starting. For plain `docker compose up`,
+    # add back `ports: ["8000:8000"]` (or run behind your own reverse proxy).
 
     healthcheck:
       test: ["CMD", "bun", "-e", "await fetch('http://localhost:8000/healthz').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
