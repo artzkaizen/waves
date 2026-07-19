@@ -58,7 +58,9 @@ COPY server/ ./server/
 # (server/models is copied as part of server/ above.)
 
 RUN mkdir -p /data
-VOLUME ["/data"]
+# NB: no `VOLUME` instruction — Railway rejects it ("use Railway Volumes"), and persistence
+# is provided by a Railway volume mounted at /data. For plain Docker / Coolify, the
+# docker-compose.yml supplies the named volume instead.
 
 EXPOSE 8000
 ENV PORT=8000
