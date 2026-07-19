@@ -19,7 +19,10 @@ services:
       NODE_ENV: production
       PORT: "8000"
       WAVES_DATA_DIR: /data
-      WAVES_INGEST_TOKEN: ${WAVES_INGEST_TOKEN:?set WAVES_INGEST_TOKEN}
+      # No `:?` guard: under otterdeploy the value is injected as container env, and the
+      # `:?` form makes `docker compose` hard-fail at parse time when the var isn't in the
+      # interpolation environment — which stops the container from ever starting.
+      WAVES_INGEST_TOKEN: ${WAVES_INGEST_TOKEN}
 
     volumes:
       # The SQLite database and every recorded WAV/video live here. This is the only
