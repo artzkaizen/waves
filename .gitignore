@@ -1,0 +1,47 @@
+# dependencies / build output
+node_modules
+dist
+dist-ssr
+*.local
+
+# Python (the Pi producer + the legacy scripts)
+.venv/
+__pycache__/
+*.pyc
+
+# runtime data — recordings, the SQLite db, the WAL. Never commit patient data.
+server/data/
+*.db
+*.db-shm
+*.db-wal
+
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# secrets — the ingest token and session secret live here
+.env
+.env.*
+!.env.example
+
+# editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# legacy reference project — keep the code, not the bulky sample data / models
+legacy/**/dataset/
+legacy/**/old_data_backup/
+legacy/**/processed/
+*.task
+*.mp4
+*.h264

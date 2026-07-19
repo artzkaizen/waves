@@ -1,0 +1,31 @@
+# Installed fresh inside the image — copying the host's would drag in darwin-arm64
+# binaries that cannot run on linux.
+node_modules
+dist
+
+# Runtime data lives on a mounted volume, never baked into the image.
+server/data/
+*.db
+*.db-shm
+*.db-wal
+
+# Not part of the server: the Pi producer runs on the Pi, and legacy/ is the superseded
+# Python server plus the teammates' repo (which carries ~11 MB of committed .mp4).
+pi/
+legacy/
+.venv/
+__pycache__/
+
+# Local-only
+.git
+.github
+tests
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+.idea
+.vscode
+README.md
+PROTOCOL.md

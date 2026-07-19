@@ -1,0 +1,42 @@
+# waves · self-hosted deployment (Coolify / plain Docker).
+#
+# Coolify terminates TLS and reverse-proxies to this container, so the app itself speaks
+# plain HTTP on 8000 and does not manage certificates.
+#
+# Required environment (set these as secrets in Coolify, not in this file):
+#   WAVES_INGEST_TOKEN   the shared secret the Pi presents on /ingest.
+#                        Generate with: openssl rand -hex 32
+#                        The server REFUSES TO BOOT in production without it.
+
+services:
+  waves:
+    image: ghcr.io/${GITHUB_REPOSITORY:-jeffersonchukwuka/iot}:latest
+    restart: unless-stopped
+
+    environment:
+      NODE_ENV: production
+      PORT: "8000"
+      WAVES_DATA_DIR: /data
+      WAVES_INGEST_TOKEN: ${WAVES_INGEST_TOKEN:?set WAVES_INGEST_TOKEN}
+
+    volumes:
+      # The SQLite database and every recorded WAV/video live here. This is the only
+      # stateful thing in the system — lose it and you lose the recordings.
+      - waves-data:/data
+
+    ports:
+      - "8000:8000"
+
+    healthcheck:
+      test: ["CMD", "bun", "-e", "await fetch('http://localhost:8000/healthz').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+
+    # SQLite + on-disk media mean this must stay a single instance. Do not scale it.
+    deploy:
+      replicas: 1
+
+volumes:
+  waves-data:

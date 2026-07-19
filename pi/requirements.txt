@@ -1,0 +1,20 @@
+# waves · Raspberry Pi producer (data.py) — Python dependencies
+#
+# REQUIRED. With just this package + the Python standard library, `--simulate`
+# runs end-to-end (motion + audio + BINARY video from baked JPEG frames) and
+# `import data` succeeds — every hardware library is imported lazily.
+websockets>=12.0
+#
+# HARDWARE (install on the Pi for real capture). data.py imports these lazily,
+# so they are NOT needed for --simulate, for `import data`, or for py_compile:
+#   picamera2>=0.3.12    # live camera; JPEG frames via MJPEGEncoder (no Pillow needed)
+#   smbus2>=0.4.0        # MPU-6050 accelerometer + gyro over I2C
+#   sounddevice>=0.4.6   # 16 kHz mono microphone capture (needs PortAudio: apt install libportaudio2)
+#
+# numpy is NOT required by data.py — the mic path decodes int16 with the stdlib
+# `array`/`struct` modules and video stays as encoded JPEG bytes end to end.
+# Listed only because real camera rigs commonly pull it in transitively:
+#   numpy>=1.24
+#
+# NOTE: picamera2 ships with Raspberry Pi OS (`sudo apt install -y python3-picamera2`).
+# Prefer the apt package over pip so its libcamera bindings match the system.
