@@ -45,3 +45,4 @@ legacy/**/processed/
 *.task
 *.mp4
 *.h264
+otterdeploy.config.json

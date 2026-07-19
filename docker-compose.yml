@@ -10,7 +10,9 @@
 
 services:
   waves:
-    image: ghcr.io/${GITHUB_REPOSITORY:-jeffersonchukwuka/iot}:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
 
     environment:
